@@ -1,0 +1,56 @@
+<html>
+<head>
+<title> HTML5 Zombies Games </title>
+
+<script>
+window.onload = onReady;
+var g_mainScreen = null;
+function onReady()
+{
+	g_mainScreen = document.getElementById("mainScreen").getContext("2d");
+	var img = new Image();
+	
+	loadZombieFrames();
+}
+var g_frames = []; 
+
+function loadZombieFrames() 
+{
+	for (var i = 0; i < 8 ; i++) {
+		var img = new Image();
+		img.onload = function()
+		{
+			g_frames.push(this); 
+		
+		};
+		img.src = "gfx/redzombie/walking e000" + i + ".png";		
+	}
+	waitLoadZombieFrames();
+}
+function waitLoadZombieFrames()
+{
+	if (g_frames.length == 8) 
+	{
+		setInterval(loopZombieFrames, 1000/20);
+	}
+	else 
+	{
+		setTimeout(waitLoadZombieFrames, 500);
+	}
+}
+
+var g_currentFrame = 0;
+function loopZombieFrames() 
+{
+	g_mainScreen.drawImage(g_frames[g_currentFrame], 0,0);
+	g_currentFrame++;	
+	if (g_currentFrame ==8) g_currentFrame=0;
+}
+</script>
+</head>
+<body>
+<div> HTML5 is fun! </div>
+<canvas id="mainScreen" width="1280" hight="640">
+</canvas>
+</body>
+</html>
