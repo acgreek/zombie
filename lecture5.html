@@ -1,0 +1,88 @@
+<html>
+<head>
+<script src="sprites.js"> </script>
+<title>HTML5 Zombies Games </title>
+
+<script>
+window.onload = onReady;
+var g_mainScreen = null;
+var g_gfxZombie = null;
+var g_gfxKnight= null;
+var g_gfxTiles = null;
+
+
+
+
+function onReady()
+{
+	g_mainScreen = document.getElementById("mainScreen").getContext("2d");
+	g_gfxZombie = new GfxSprite(g_redZombieTemplate);
+	g_gfxZombie.load();
+
+	g_gfxKnight = new GfxSprite(g_knightTemplate);
+	g_gfxKnight.load();
+
+	var img= new Image (); 
+	img.onload = function() {g_gfxTiles = this; };
+	img.src = "gfx/tiles/ClifTiles.png";
+	waitLoadGfx();
+}
+
+
+function waitLoadGfx() 
+{
+	if (g_gfxZombie.isReady == false && g_gfxKnight.isReady == false && g_gfxTiles == null) {
+		setTimeout(waitLoadGfx, 500);
+	}
+	else {
+		startGame()
+	}
+}
+
+function startGame() 
+{
+	g_mainScreen.drawImage(g_gfxTiles, 0,0);
+}
+
+var g_frames = []; 
+
+function loadZombieFrames() 
+{
+	for (var i = 0; i < 10 ; i++) {
+		var img = new Image();
+		img.onload = function()
+		{
+			g_frames.push(this); 
+		
+		};
+		img.src = "gfx/redzombie/attack e000" + i + ".png";		
+	}
+	waitLoadZombieFrames();
+}
+function waitLoadZombieFrames()
+{
+	if (g_frames.length == 10) 
+	{
+		setInterval(loopZombieFrames, 1000/20);
+	}
+	else 
+	{
+		setTimeout(waitLoadZombieFrames, 500);
+	}
+}
+
+var g_currentFrame = 0;
+function loopZombieFrames() 
+{
+	g_mainScreen.drawImage(g_frames[g_currentFrame], 0,0);
+	g_currentFrame++;	
+	if (g_currentFrame ==10) g_currentFrame=0;
+}
+</script>
+</head>
+<body>
+<div> HTML5 is fun! </div>
+<canvas id="mainScreen" width="1280" height="640">
+</canvas>
+</body>
+</html>
